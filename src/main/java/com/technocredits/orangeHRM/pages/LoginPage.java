@@ -22,7 +22,7 @@ public class LoginPage extends PredefinedMethods{
 		initialization();
 		//whenever we call page; its properties file should be loaded:-	
 		PropertyFileReader propRead = new PropertyFileReader();
-		loginProperties = propRead.initializePropertyFile(CONSTANT.propertyFilePath);
+		loginProperties = propRead.initializePropertyFile(CONSTANT.loginpagePropertyFilePath);
 	}
 	
 	//Private instance : no one can outside access Classname.instanceName.method

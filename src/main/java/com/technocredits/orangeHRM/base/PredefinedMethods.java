@@ -4,13 +4,13 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-import com.technocredits.orangeHRM.constant.CONSTANT;
+import org.openqa.selenium.interactions.Actions;
 
 public class PredefinedMethods {
 
-	WebDriver driver;
+	static WebDriver driver;
 	
 	public void initialization(){
 		System.setProperty("webdriver.chrome.driver","E:\\Aakanksha\\Technocredits\\Selenium\\Selenium_Required_Software_Jars\\chromedriver.exe");
@@ -24,12 +24,28 @@ public class PredefinedMethods {
 	
 	//enter value in the given textbox
 	public void setText(String locator, String value){
-		driver.findElement(By.xpath(locator)).sendKeys(value);
+		getElement(locator).sendKeys(value);
 	}
 	
 	//click on given link-locator value
 	public void click(String locator){
-		driver.findElement(By.xpath(locator)).click();
+		getElement(locator).click();
+	}
+	
+	//return current page URL
+	public String getURL(){
+		return driver.getCurrentUrl();
+	}
+	
+	//return WebElement
+	public WebElement getElement(String locator){
+		return driver.findElement(By.xpath(locator));
+	}
+	
+	//mousehover
+	public void expandMenu(String locator){
+		Actions builder = new Actions(driver);
+		builder.moveToElement(getElement(locator)).build().perform();
 	}
 	
 }

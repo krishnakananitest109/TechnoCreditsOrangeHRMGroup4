@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.technocredits.orangeHRM.base.PredefinedMethods;
 import com.technocredits.orangeHRM.pages.LoginPage;
 import com.technocredits.orangeHRM.pages.PIM.PIM_AddEmployeePage;
+import com.technocredits.orangeHRM.pages.PIM.PIM_viewPersonalDetails;
 
 //Login, Logout ,navigationMenu are common functionalities needed to all so kept in commonTest
 
@@ -27,6 +28,12 @@ public class CommonTest extends PredefinedMethods{
 		//navigating to PIM Add employee page
 		addEmployeeinstance.goto_PIM_addEmployee();
 		return addEmployeeinstance;
+	}
+	
+	public PIM_viewPersonalDetails goto_PIM_empPerDetails() throws IOException{
+		//calling add employee page instance 
+		PIM_viewPersonalDetails pimPerDetailsInstance = PIM_viewPersonalDetails.getPerDetailsInstance();
+		return pimPerDetailsInstance;
 	}
 	
 }

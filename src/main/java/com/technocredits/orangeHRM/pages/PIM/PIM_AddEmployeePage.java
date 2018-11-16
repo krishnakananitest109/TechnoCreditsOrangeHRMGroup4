@@ -10,13 +10,14 @@ import com.technocredits.orangeHRM.util.PropertyFileReader;
 public class PIM_AddEmployeePage extends PredefinedMethods{
 	
 	//create properties instance only one-time 
-	Properties loginProperties;
+	Properties pimPageProperties;
 	
 	private PIM_AddEmployeePage() throws IOException{
 		//whenever we call page; its properties file should be loaded:-	
 		PropertyFileReader propRead = new PropertyFileReader();
-		loginProperties = propRead.initializePropertyFile(CONSTANT.pimAddEmpPropertyFilePath);		
+		pimPageProperties = propRead.initializePropertyFile(CONSTANT.pimAddEmpPropertyFilePath);		
 	}
+	
 	private static PIM_AddEmployeePage pimInstance;
 	
 	//method to get instance of PIM Add employee page
@@ -34,7 +35,51 @@ public class PIM_AddEmployeePage extends PredefinedMethods{
 	
 	public void goto_PIM_addEmployee(){
 		//click on PIM Add employee page
-		expandMenu(loginProperties.getProperty("PIMtitle"));
-		click(loginProperties.getProperty("PIMAddEmployeetitle"));
+		expandMenu(pimPageProperties.getProperty("PIMtitle"));
+		click(pimPageProperties.getProperty("PIMAddEmployeetitle"));
 	}
+	
+	//call a method which passes form fields parameters and click on save
+	public String addEmployee(String fName, String midName, String lName){
+		
+		//send the fields inputs in the form
+		setText(pimPageProperties.getProperty("AddEmpFirstName"),fName);
+		setText(pimPageProperties.getProperty("AddEmpMiddleName"),midName);
+		setText(pimPageProperties.getProperty("AddEmpLastName"),lName);
+			
+		//store emp id
+		String EmpID = getAttributeValue(pimPageProperties.getProperty("AddEmpEmpID"));
+		
+		//click on Save Button
+		click(pimPageProperties.getProperty("AddEmpSaveButton"));
+		
+		//check whether employee has been added and we navigate to the next page
+		if(getURL().contains("https://opensource-demo.orangehrmlive.com/index.php/pim/viewPersonalDetails/empNumber/"+EmpID)){
+			//System.out.println("New Employee has been successfully added");
+			//it successfully added new employee and hence will return employee id
+			return EmpID;
+		}
+		else
+			return "0";
+		
+	}
+	
+	//this method checks whether field on Add Employee Page is mandatory(*)
+	public boolean verifyRequiredFieldOnAddEmpPage(String field, String inputValue){
+		//fetch locator value for the given field from properties
+		String locator = pimPageProperties.getProperty(field);
+		setText(locator, inputValue);
+		
+		//set locator error : 'required'
+		//String locator_error = pimPageProperties.getProperty(field+"Error")
+		
+		//click on save button 
+		click(pimPageProperties.getProperty("AddEmpSaveButton"));
+		
+		//it will return that error is visible or not : displayed it means it is mandatory field
+		//field_error : required's xpath is mentioned in the properties file which is present for mandatory fields
+		return verifyElementToBeVisible(pimPageProperties.getProperty(field+"Error"));
+		
+	}
+	
 }
